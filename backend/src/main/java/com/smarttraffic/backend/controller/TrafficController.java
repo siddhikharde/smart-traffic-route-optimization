@@ -1,5 +1,8 @@
 package com.smarttraffic.backend.controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping; 
+import org.springframework.web.bind.annotation.RequestBody;
+import com.smarttraffic.backend.TrafficPredictionRequest;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController 
@@ -11,4 +14,12 @@ public class TrafficController {
         
     }
 
+
+    @PostMapping("/api/traffic/predict")
+    public TrafficPredictionRequest receivePredictionRequest(
+        @RequestBody TrafficPredictionRequest request
+    ){
+        return request;
+    }
+    
 }

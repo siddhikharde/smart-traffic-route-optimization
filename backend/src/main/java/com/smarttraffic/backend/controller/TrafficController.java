@@ -3,6 +3,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping; 
 import org.springframework.web.bind.annotation.RequestBody;
 import com.smarttraffic.backend.TrafficPredictionRequest;
+import com.smarttraffic.backend.TrafficPredictionResponse;
+
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController 
@@ -15,11 +17,14 @@ public class TrafficController {
     }
 
 
-    @PostMapping("/api/traffic/predict")
-    public TrafficPredictionRequest receivePredictionRequest(
-        @RequestBody TrafficPredictionRequest request
-    ){
-        return request;
-    }
+@PostMapping("/api/traffic/predict")
+public TrafficPredictionResponse predictTraffic(
+        @RequestBody TrafficPredictionRequest request) {
+
+    TrafficPredictionResponse response =
+            new TrafficPredictionResponse(98.52, "Very High");
+
+    return response;
+}
     
 }

@@ -2,64 +2,84 @@ import React from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 
 function Navbar() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user"))
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user"); 
-    navigate("/login");
-  };
+    localStorage.removeItem("token")
+    localStorage.removeItem("user")
+    navigate("/login")
+  }
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow-sm">
       <div className="container-fluid">
 
-       <NavLink
-  className="navbar-brand fw-bold fs-2"
-  to="/"
-  style={{ color: "#4d0ff6" }}
->
-  TrafficIQ
-</NavLink>
+        {/* Logo */}
+        <NavLink
+          className="navbar-brand fw-bold fs-2"
+          to="/"
+          style={{ color: "#4d0ff6" }}
+        >
+          TrafficIQ
+        </NavLink>
 
+        {/* Hamburger Button */}
         <button
           className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        {/* Mobile Menu */}
+        <div
+          className="collapse navbar-collapse"
+          id="navbarSupportedContent"
+        >
 
+          {/* Pages */}
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
 
-            
             <li className="nav-item">
-              <NavLink className="nav-link fs-5 m-2" to="/" style={{ color: "#8b65f6" }}>
+              <NavLink
+                className="nav-link fs-5 m-2"
+                to="/"
+                style={{ color: "#8b65f6" }}
+              >
                 Home
               </NavLink>
             </li>
 
-
             <li className="nav-item">
-              <NavLink className="nav-link fs-5 m-2" to="/history" style={{ color: "#8b65f6" }}>
+              <NavLink
+                className="nav-link fs-5 m-2"
+                to="/history"
+                style={{ color: "#8b65f6" }}
+              >
                 History
               </NavLink>
             </li>
 
-            <li className="nav-item"> 
-              <NavLink className="nav-link fs-5 m-2" to="/about" style={{ color: "#8b65f6" }}>
+            <li className="nav-item">
+              <NavLink
+                className="nav-link fs-5 m-2"
+                to="/about"
+                style={{ color: "#8b65f6" }}
+              >
                 About
               </NavLink>
             </li>
 
-          
           </ul>
 
+          {/* Login / User Section */}
           <div className="d-flex align-items-center gap-3">
 
             {user ? (
@@ -94,27 +114,27 @@ function Navbar() {
             ) : (
               <>
                 <button
-  className="btn"
-  style={{
-    color: "#4d0ff6",
-    borderColor: "#4d0ff6"
-  }}
-  onClick={() => navigate("/login")}
->
-  Login
-</button>
+                  className="btn"
+                  style={{
+                    color: "#4d0ff6",
+                    borderColor: "#4d0ff6"
+                  }}
+                  onClick={() => navigate("/login")}
+                >
+                  Login
+                </button>
 
-               <button
-  className="btn"
-  style={{
-    backgroundColor: "#4d0ff6",
-    color: "white",
-    borderColor: "#4d0ff6"
-  }}
-  onClick={() => navigate("/signup")}
->
-  Signup
-</button>
+                <button
+                  className="btn"
+                  style={{
+                    backgroundColor: "#4d0ff6",
+                    color: "white",
+                    borderColor: "#4d0ff6"
+                  }}
+                  onClick={() => navigate("/signup")}
+                >
+                  Signup
+                </button>
               </>
             )}
 
@@ -126,4 +146,4 @@ function Navbar() {
   )
 }
 
-export default Navbar;
+export default Navbar

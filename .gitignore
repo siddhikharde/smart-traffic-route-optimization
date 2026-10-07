@@ -1,0 +1,19 @@
+#Data Science Project
+data-science/data/raw/
+data-science/data/processed/
+
+#Trained ML models
+data-science/models/*.pkl
+data-science/models/*.joblib
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/

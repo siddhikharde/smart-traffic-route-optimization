@@ -1,0 +1,24 @@
+.footer-link {
+  color: #d9d2f7;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: #8b65f6;
+}
+/* Placeholder + typed text color */
+.auth-form .form-control {
+  color: #4d0ff6;
+}
+/* Signup*/
+
+input.form-control::placeholder,
+.form-control::placeholder {
+  color: #4d0ff6 !important;
+  opacity: 1 !important;
+}
+
+.form-control:focus {
+  border-color: #4d0ff6 !important;
+  box-shadow: 0 0 0 0.25rem rgba(77, 15, 246, 0.25) !important;
+}

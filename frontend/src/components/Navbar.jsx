@@ -1,21 +1,20 @@
-import React from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import React from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function Navbar() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const user = JSON.parse(localStorage.getItem("user"))
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const handleLogout = () => {
-    localStorage.removeItem("token")
-    localStorage.removeItem("user")
-    navigate("/login")
-  }
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow-sm">
+    <nav className="navbar navbar-expand-lg bg-body-tertiary shadow-sm sticky-top">
       <div className="container-fluid">
-
         {/* Logo */}
         <NavLink
           className="navbar-brand fw-bold fs-2"
@@ -25,7 +24,7 @@ function Navbar() {
           TrafficIQ
         </NavLink>
 
-        {/* Hamburger Button */}
+        {/* Mobile Toggle Button */}
         <button
           className="navbar-toggler"
           type="button"
@@ -38,15 +37,10 @@ function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* Mobile Menu */}
-        <div
-          className="collapse navbar-collapse"
-          id="navbarSupportedContent"
-        >
-
-          {/* Pages */}
+        {/* Navbar Content */}
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          {/* Navigation Links */}
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-
             <li className="nav-item">
               <NavLink
                 className="nav-link fs-5 m-2"
@@ -76,14 +70,13 @@ function Navbar() {
                 About
               </NavLink>
             </li>
-
           </ul>
 
           {/* Login / User Section */}
           <div className="d-flex align-items-center gap-3">
-
             {user ? (
               <>
+                {/* User Avatar */}
                 <div
                   style={{
                     width: "35px",
@@ -94,16 +87,16 @@ function Navbar() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
                   }}
                 >
                   {user.name?.charAt(0).toUpperCase()}
                 </div>
 
-                <span className="fw-bold">
-                  {user.name}
-                </span>
+                {/* User Name */}
+                <span className="fw-bold">{user.name}</span>
 
+                {/* Logout Button */}
                 <button
                   className="btn btn-danger btn-sm"
                   onClick={handleLogout}
@@ -113,23 +106,22 @@ function Navbar() {
               </>
             ) : (
               <>
+                {/* Login Button */}
                 <button
                   className="btn"
-                  style={{
-                    color: "#4d0ff6",
-                    borderColor: "#4d0ff6"
-                  }}
+                  style={{ color: "#4d0ff6", borderColor: "#4d0ff6" }}
                   onClick={() => navigate("/login")}
                 >
                   Login
                 </button>
 
+                {/* Signup Button */}
                 <button
                   className="btn"
                   style={{
                     backgroundColor: "#4d0ff6",
                     color: "white",
-                    borderColor: "#4d0ff6"
+                    borderColor: "#4d0ff6",
                   }}
                   onClick={() => navigate("/signup")}
                 >
@@ -137,13 +129,11 @@ function Navbar() {
                 </button>
               </>
             )}
-
           </div>
-
         </div>
       </div>
     </nav>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

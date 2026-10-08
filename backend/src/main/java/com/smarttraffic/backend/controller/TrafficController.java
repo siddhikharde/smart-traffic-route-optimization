@@ -5,6 +5,8 @@ import com.smarttraffic.backend.MLPredictionResponse;
 import com.smarttraffic.backend.TrafficPredictionRequest;
 import com.smarttraffic.backend.TrafficPredictionResponse;
 import com.smarttraffic.backend.service.MLPredictionService;
+import com.smarttraffic.backend.entity.TrafficPrediction;
+import com.smarttraffic.backend.repository.TrafficPredictionRepository;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +14,15 @@ import org.springframework.web.bind.annotation.*;
 public class TrafficController {
 
     private final MLPredictionService mlPredictionService;
+    private final TrafficPredictionRepository trafficPredictionRepository;
 
-    public TrafficController(MLPredictionService mlPredictionService) {
-        this.mlPredictionService = mlPredictionService;
-    }
+    public TrafficController(
+        MLPredictionService mlPredictionService,
+        TrafficPredictionRepository trafficPredictionRepository) {
+
+    this.mlPredictionService = mlPredictionService;
+    this.trafficPredictionRepository = trafficPredictionRepository;
+}
 
     @GetMapping("/api/traffic/status")
     public String getTrafficStatus() {
@@ -52,6 +59,14 @@ public class TrafficController {
 
         MLPredictionResponse mlResponse =
                 mlPredictionService.predict(mlRequest);
+        TrafficPrediction prediction = new TrafficPrediction();
+
+prediction.setArea(request.getAreaName());
+prediction.setRoadIntersection(request.getRoadIntersectionName());
+prediction.setPredictedCongestion(mlResponse.getPredicted_congestion());
+prediction.setCongestionLevel(mlResponse.getCongestion_level());
+
+trafficPredictionRepository.save(prediction);
 
         return new TrafficPredictionResponse(
                 mlResponse.getPredicted_congestion(),

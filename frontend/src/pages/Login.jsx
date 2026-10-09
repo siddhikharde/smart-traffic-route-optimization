@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import RoadBackground from "../components/home/RoadBackground";
 import "../components/home/home.css"; // styles for the road background
+import { loginUser } from "../api/auth";
 
 function Login() {
   const navigate = useNavigate();
@@ -25,33 +26,16 @@ function Login() {
     }
 
     try {
-      setLoading(true);
-
-      // Change this URL to match your backend
-      const res = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || "Invalid email or password.");
-        return;
-      }
-
-      // Expected response: { token: "...", user: { name: "...", email: "..." } }
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      navigate("/");
-    } catch (err) {
-      console.error("Request failed:", err);
-      setError("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+  setLoading(true);
+  const { token, user } = await loginUser(formData);
+  localStorage.setItem("token", token);
+  localStorage.setItem("user", JSON.stringify(user));
+  navigate("/planner");
+} catch (err) {
+  setError(err.message);
+} finally {
+  setLoading(false);
+}
   };
 
   return (

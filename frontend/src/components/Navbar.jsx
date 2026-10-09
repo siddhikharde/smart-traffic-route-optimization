@@ -50,16 +50,21 @@ function Navbar() {
                 Home
               </NavLink>
             </li>
+            {user && (
+  <li className="nav-item">
+    <NavLink className="nav-link fs-5 m-2" to="/planner"  style={{ color: "#8b65f6" }}>
+      Plan Route
+    </NavLink>
+  </li>
+)}
 
-            <li className="nav-item">
-              <NavLink
-                className="nav-link fs-5 m-2"
-                to="/history"
-                style={{ color: "#8b65f6" }}
-              >
-                History
-              </NavLink>
-            </li>
+{user && (
+  <li className="nav-item">
+    <NavLink className="nav-link fs-5 m-2" to="/history"  style={{ color: "#8b65f6" }}>
+      History
+    </NavLink>
+  </li>
+)}
 
             <li className="nav-item">
               <NavLink

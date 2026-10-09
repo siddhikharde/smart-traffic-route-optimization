@@ -135,10 +135,10 @@ function Hero() {
 
             <div className="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start mt-4">
               <Link
-                to={user ? "/history" : "/signup"}
+               to={user ? "/planner" : "/signup"}
                 className="btn btn-lg fw-semibold px-4 hero-btn hero-btn-solid"
               >
-                {user ? "View My History" : "Get Started"}
+              {user ? "Plan a Route" : "Get Started"}
               </Link>
               <Link
                 to="/about"

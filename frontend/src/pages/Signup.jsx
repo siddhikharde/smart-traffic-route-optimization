@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import RoadBackground from "../components/home/RoadBackground";
 import "../components/home/home.css"; // styles for the road background
+import { signupUser } from "../api/auth";
 
 function Signup() {
   const navigate = useNavigate();
@@ -43,31 +44,16 @@ function Signup() {
       return;
     }
 
-    try {
-      setLoading(true);
-
-      // Change this URL to match your backend
-      const res = await fetch("http://localhost:5000/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || "Signup failed. Please try again.");
-        return;
-      }
-
-      setSuccess("Account created successfully! Redirecting to login...");
-      setTimeout(() => navigate("/login"), 1500);
-    } catch (err) {
-      console.error("Request failed:", err);
-      setError("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+   try {
+  setLoading(true);
+  await signupUser({ name, email, password });
+  setSuccess("Account created successfully! Redirecting to login...");
+  setTimeout(() => navigate("/login"), 1500);
+} catch (err) {
+  setError(err.message);
+} finally {
+  setLoading(false);
+}
   };
 
   return (

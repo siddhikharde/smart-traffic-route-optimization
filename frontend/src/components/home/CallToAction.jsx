@@ -87,10 +87,10 @@ function CallToAction() {
             Join TrafficIQ and start planning smarter, faster journeys today.
           </p>
           <Link
-            to={user ? "/history" : "/signup"}
+            to={user ? "/planner" : "/signup"}
             className="btn btn-light btn-lg fw-semibold px-5 cta-btn"
           >
-            {user ? "Go to History" : "Create Free Account"}
+            {user ? "Plan a Route" : "Create Free Account"}
           </Link>
         </div>
       </div>

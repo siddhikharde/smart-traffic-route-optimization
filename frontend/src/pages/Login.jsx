@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import RoadBackground from "../components/home/RoadBackground";
+import "../components/home/home.css"; // styles for the road background
+import { loginUser } from "../api/auth";
 
 function Login() {
   const navigate = useNavigate();
@@ -23,40 +26,62 @@ function Login() {
     }
 
     try {
-      setLoading(true);
-
-      // Change this URL to match your backend
-      const res = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || "Invalid email or password.");
-        return;
-      }
-
-      // Expected response: { token: "...", user: { name: "...", email: "..." } }
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      navigate("/");
-    } catch (err) {
-      setError("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+  setLoading(true);
+  const { token, user } = await loginUser(formData);
+  localStorage.setItem("token", token);
+  localStorage.setItem("user", JSON.stringify(user));
+  navigate("/planner");
+} catch (err) {
+  setError(err.message);
+} finally {
+  setLoading(false);
+}
   };
 
   return (
-    <div
-      className="d-flex align-items-center justify-content-center px-3 py-5"
-      style={{ minHeight: "80vh", backgroundColor: "#f4f1ff" }}
-    >
+    <div className="login-page">
       <style>{`
+        /* Light shades of #4d0ff6 */
+        .login-page {
+          position: relative;
+          overflow: hidden;
+          min-height: calc(100vh - 72px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 3rem 1rem;
+          background: linear-gradient(135deg, #f1edff 0%, #c9b8ff 50%, #9d80f9 100%);
+        }
+
+        /* Road background (sharp, no blur) */
+        .login-bg {
+          position: absolute;
+          inset: 0;
+        }
+
+        /* Roads recolored to purple so they show on the light background */
+        .login-page .road-surface {
+          stroke: rgba(77, 15, 246, 0.15);
+        }
+        .login-page .road-center {
+          stroke: rgba(77, 15, 246, 0.45);
+        }
+        .login-page .road-bg circle[fill="#ffffff"] {
+          fill: #4d0ff6;
+        }
+
+        /* Login card above the background */
+        .login-card {
+          position: relative;
+          z-index: 2;
+          width: 100%;
+          max-width: 420px;
+          border: 1px solid rgba(77, 15, 246, 0.15) !important;
+          border-radius: 16px !important;
+          background: rgba(255, 255, 255, 0.95) !important;
+          box-shadow: 0 20px 50px rgba(77, 15, 246, 0.25) !important;
+        }
+
         .auth-form .form-control::placeholder {
           color: #4d0ff6 !important;
           opacity: 1 !important;
@@ -65,16 +90,22 @@ function Login() {
           border-color: #4d0ff6 !important;
           box-shadow: 0 0 0 0.25rem rgba(77, 15, 246, 0.25) !important;
         }
-        .auth-form .btn-show:hover {
+        .auth-form .btn-show:hover,
+        .auth-form .btn-show:focus,
+        .auth-form .btn-show:active {
           background-color: #4d0ff6 !important;
-          color: #fff !important;
+          border-color: #4d0ff6 !important;
+          color: #ffffff !important;
         }
       `}</style>
 
-      <div
-        className="card shadow border-0 w-100"
-        style={{ maxWidth: "420px", borderRadius: "16px" }}
-      >
+      {/* Background */}
+      <div className="login-bg">
+        <RoadBackground />
+      </div>
+
+      {/* Login form */}
+      <div className="card login-card">
         <div className="card-body p-4 p-md-5">
           <h2 className="fw-bold text-center mb-1" style={{ color: "#4d0ff6" }}>
             TrafficIQ

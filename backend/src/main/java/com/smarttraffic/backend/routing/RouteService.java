@@ -16,6 +16,7 @@ import com.smarttraffic.backend.MLPredictionRequest;
 import com.smarttraffic.backend.MLPredictionResponse;
 import com.smarttraffic.backend.service.MLPredictionService;
 import com.smarttraffic.backend.TrafficPredictionRequest;
+import java.util.Comparator;
 
 @Service
 public class RouteService {
@@ -116,6 +117,25 @@ public class RouteService {
                                                 route.path("geometry").toString());
 
                                 routeOptions.add(option);
+                        }
+
+                        routeOptions.sort(
+                                        Comparator.comparingDouble(RouteOption::getPredictedCongestion)
+                                                        .thenComparingDouble(RouteOption::getDurationMinutes)
+                                                        .thenComparingDouble(RouteOption::getDistanceKm));
+
+                        if (!routeOptions.isEmpty()) {
+                                RouteOption bestRoute = routeOptions.get(0);
+
+                                bestRoute.setRecommended(true);
+                                bestRoute.setRecommendationMessage(
+                                                "Recommended route based on predicted congestion and travel time");
+
+                                for (int i = 1; i < routeOptions.size(); i++) {
+                                        routeOptions.get(i).setRecommended(false);
+                                        routeOptions.get(i).setRecommendationMessage(
+                                                        "Alternative route");
+                                }
                         }
 
                         routeResponse.setOrigin(

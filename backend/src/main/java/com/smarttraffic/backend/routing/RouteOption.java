@@ -8,6 +8,8 @@ public class RouteOption {
     private double predictedCongestion;
     private String congestionLevel;
     private String geometry;
+    private boolean recommended;
+    private String recommendationMessage;
 
     public RouteOption() {
     }
@@ -50,5 +52,21 @@ public class RouteOption {
 
     public void setGeometry(String geometry) {
         this.geometry = geometry;
+    }
+
+    public boolean isRecommended() {
+        return recommended;
+    }
+
+    public void setRecommended(boolean recommended) {
+        this.recommended = recommended;
+    }
+
+    public String getRecommendationMessage() {
+        return recommendationMessage;
+    }
+
+    public void setRecommendationMessage(String recommendationMessage) {
+        this.recommendationMessage = recommendationMessage;
     }
 }

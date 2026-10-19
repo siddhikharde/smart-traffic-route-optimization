@@ -6,6 +6,7 @@ public class RouteOption {
     private double distanceKm;
     private double durationMinutes;
     private double predictedCongestion;
+    private double liveSpeedKmph;
     private String congestionLevel;
     private String geometry;
     private boolean recommended;
@@ -45,6 +46,13 @@ public class RouteOption {
     public void setCongestionLevel(String congestionLevel) {
         this.congestionLevel = congestionLevel;
     }
+    public double getLiveSpeedKmph() {
+    return liveSpeedKmph;
+}
+
+public void setLiveSpeedKmph(double liveSpeedKmph) {
+    this.liveSpeedKmph = liveSpeedKmph;
+}
 
     public String getGeometry() {
         return geometry;

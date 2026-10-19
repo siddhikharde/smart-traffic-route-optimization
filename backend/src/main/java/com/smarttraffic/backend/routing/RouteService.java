@@ -86,6 +86,7 @@ public class RouteService {
         originLongitude);
 
 mlRequest.setAverage_speed((int) Math.round(liveSpeed));
+option.setLiveSpeedKmph(liveSpeed);
 
 System.out.println("TomTom live speed: " + liveSpeed + " km/h");
                                 mlRequest.setIncident_reports(trafficRequest.getIncidentReports());

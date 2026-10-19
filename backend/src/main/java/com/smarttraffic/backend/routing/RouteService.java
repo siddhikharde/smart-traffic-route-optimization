@@ -4,6 +4,7 @@ package com.smarttraffic.backend.routing;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import com.smarttraffic.backend.TomTomTrafficService;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,11 +25,13 @@ public class RouteService {
         private final RestClient restClient;
         private final ObjectMapper objectMapper;
         private final MLPredictionService mlPredictionService;
+        private final TomTomTrafficService tomTomTrafficService;
 
         public RouteService(
                         RestClient.Builder builder,
                         ObjectMapper objectMapper,
-                        MLPredictionService mlPredictionService) {
+                        MLPredictionService mlPredictionService,
+                        TomTomTrafficService tomTomTrafficService) {
 
                 this.restClient = builder
                                 .baseUrl("https://router.project-osrm.org")
@@ -39,6 +42,7 @@ public class RouteService {
 
                 this.objectMapper = objectMapper;
                 this.mlPredictionService = mlPredictionService;
+                this.tomTomTrafficService = tomTomTrafficService;
         }
 
         public RouteResponse getRoutes(
@@ -77,7 +81,13 @@ public class RouteService {
                                                 trafficRequest.getRoadIntersectionName());
 
                                 mlRequest.setTraffic_volume(trafficRequest.getTrafficVolume());
-                                mlRequest.setAverage_speed(trafficRequest.getAverageSpeed());
+                               double liveSpeed = tomTomTrafficService.getCurrentSpeed(
+        originLatitude,
+        originLongitude);
+
+mlRequest.setAverage_speed((int) Math.round(liveSpeed));
+
+System.out.println("TomTom live speed: " + liveSpeed + " km/h");
                                 mlRequest.setIncident_reports(trafficRequest.getIncidentReports());
 
                                 mlRequest.setPublic_transport_usage(

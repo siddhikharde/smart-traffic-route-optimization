@@ -81,14 +81,15 @@ public class RouteService {
                                                 trafficRequest.getRoadIntersectionName());
 
                                 mlRequest.setTraffic_volume(trafficRequest.getTrafficVolume());
-                               double liveSpeed = tomTomTrafficService.getCurrentSpeed(
-        originLatitude,
-        originLongitude);
+                        JsonNode geometry = route.path("geometry");
+
+double liveSpeed = getAverageRouteSpeed(geometry);
 
 mlRequest.setAverage_speed((int) Math.round(liveSpeed));
 option.setLiveSpeedKmph(liveSpeed);
 
-System.out.println("TomTom live speed: " + liveSpeed + " km/h");
+System.out.println(
+        "Average live speed for route: " + liveSpeed + " km/h");
                                 mlRequest.setIncident_reports(trafficRequest.getIncidentReports());
 
                                 mlRequest.setPublic_transport_usage(
@@ -163,4 +164,54 @@ System.out.println("TomTom live speed: " + liveSpeed + " km/h");
                                         "Failed to parse routing response", e);
                 }
         }
+        private double getAverageRouteSpeed(JsonNode geometry) {
+    JsonNode coordinates = geometry.path("coordinates");
+
+    if (!coordinates.isArray() || coordinates.isEmpty()) {
+        throw new RuntimeException("Route geometry has no coordinates");
+    }
+
+    int lastIndex = coordinates.size() - 1;
+
+    int[] sampleIndexes = {
+            0,
+            lastIndex / 2,
+            lastIndex
+    };
+
+    double totalSpeed = 0;
+    int successfulSamples = 0;
+
+    for (int index : sampleIndexes) {
+        JsonNode point = coordinates.get(index);
+
+        double longitude = point.get(0).asDouble();
+        double latitude = point.get(1).asDouble();
+
+        try {
+            double speed = tomTomTrafficService.getCurrentSpeed(latitude, longitude);
+
+            if (Double.isFinite(speed) && speed > 0) {
+                totalSpeed += speed;
+                successfulSamples++;
+            }
+
+            System.out.println(
+                    "Route traffic sample: " + speed + " km/h at "
+                            + latitude + ", " + longitude);
+
+        } catch (Exception e) {
+            System.err.println(
+                    "Could not retrieve traffic for sample point: "
+                            + latitude + ", " + longitude);
+        }
+    }
+
+    if (successfulSamples == 0) {
+        throw new RuntimeException(
+                "Could not retrieve traffic speed for any route sample");
+    }
+
+    return totalSpeed / successfulSamples;
+}
 }
